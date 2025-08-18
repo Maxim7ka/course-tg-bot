@@ -52,7 +52,7 @@ const start = async () => {
 
             return bot.sendMessage(chatId, 'Я тебя не понимаю');
         } catch (e) {
-            return bot.sendMessage(chatId, 'Error')
+            return bot.sendMessage(chatId, `Error ${e}`)
         }
 
 
