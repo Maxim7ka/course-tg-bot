@@ -1,5 +1,5 @@
 const TelegramApi = require('node-telegram-bot-api');
-const { gameOptions, againOptions } = require('./options')
+const { gameOptions, againOptions } = require('./options');
 const { token } = require('./token');
 
 const bot = new TelegramApi(token, { polling: true });
@@ -13,7 +13,7 @@ const startGame = async (chatId) => {
     await bot.sendMessage(chatId, 'Отгадывай', gameOptions);
 }
 
-const start = () => {
+const start = async () => {
     bot.setMyCommands([
         { command: '/start', description: 'Приветствие' },
         { command: '/info', description: 'Получить иноформацию о пользователе' },
@@ -48,8 +48,10 @@ const start = () => {
 
         if (data === chats[chatId]) {
             return bot.sendMessage(chatId, `Поздравляю, ты угадал цифру ${chats[chatId]}!`, againOptions);
-        } else {
-            return bot.sendMessage(chatId, `Ты не угадал, бот загадал цифру ${chats[chatId]}!`, againOptions);
+        } else if (data > chats[chatId]) {
+            return bot.sendMessage(chatId, `Загаданное число меньше ${data}`);
+        } else if (data < chats[chatId]) {
+            return bot.sendMessage(chatId, `Загаданное число больше ${data}`);
         }
     })
 }
